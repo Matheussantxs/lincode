@@ -1,0 +1,12 @@
+.data
+.local
+.env*
+!.env.example
+tools
+references
+tests
+docs/qa
+work
+strix_runs
+.git
+public

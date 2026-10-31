@@ -1,0 +1,44 @@
+# Credenciais e configurações locais
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.data/
+.local/
+/tools/9router/
+
+# Python e ambientes
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Dependências e resultados gerados
+node_modules/
+dist/
+coverage/
+*.log
+portfolio/artifacts/
+
+# Material de investigação e perfis de navegador ficam fora do repositório
+work/
+chrome-qa*/
+*.har
+*.saz
+
+# Prévia gerada, se houver
+preview-*.png
+# Deployment and security tooling
+.vercel/
+public/
+references/
+strix_runs/
+*.pfx
+*.p12

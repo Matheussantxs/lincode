@@ -1,0 +1,38 @@
+{
+  "status": "pass",
+  "checkedAt": "2026-10-31T19:56:16.168Z",
+  "provider": "simulated",
+  "viewports": [
+    "1440x900",
+    "390x844"
+  ],
+  "checks": [
+    "onboarding",
+    "chapter counts",
+    "wrong answer retry",
+    "typed response",
+    "reload resume",
+    "no duplicate XP",
+    "guest transfer",
+    "logout isolation",
+    "login restore",
+    "preferences",
+    "language isolation",
+    "eight activities",
+    "pairs",
+    "order",
+    "responsive overflow",
+    "keyboard focus",
+    "reduced motion",
+    "loading state",
+    "empty state",
+    "login error",
+    "visitor boundary",
+    "custom flowchart",
+    "active time"
+  ],
+  "skipped": [
+    "Headless Chrome did not transfer document focus; background time pause requires manual verification."
+  ],
+  "errors": []
+}

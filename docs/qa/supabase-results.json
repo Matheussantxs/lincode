@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-31",
+  "project": "Lincode",
+  "projectRef": "oxkjuwnqzsdwzvyxdnpm",
+  "organization": "Kavolt",
+  "region": "sa-east-1",
+  "migrationApplied": true,
+  "rlsEnabledAndForced": [
+    "public.profiles",
+    "public.learning_progress",
+    "codeowl_private.rate_limits"
+  ],
+  "policies": 6,
+  "twoUserIsolationSql": "pass",
+  "anonymousSql": "pass",
+  "ownerReassignmentBlocked": "pass",
+  "privateLimiterAccessBlocked": "pass",
+  "rateLimiterRepeatedRequestSql": "pass",
+  "anonymousRest": {
+    "profiles": 401,
+    "learning_progress": 401
+  },
+  "leftoverSyntheticUsers": 0,
+  "emailConfirmationRequired": true,
+  "securityAdvisors": [
+    {
+      "level": "INFO",
+      "name": "rls_enabled_no_policy",
+      "table": "codeowl_private.rate_limits",
+      "reason": "Intentional default deny: access only through internal function",
+      "url": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy"
+    }
+  ],
+  "pending": [
+    "Server rate-limit secret environment variable",
+    "Real browser signup and confirmation",
+    "GitHub and Vercel deployment",
+    "Strix scan"
+  ]
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Texto principal",
+    "foreground": "#eef1f6",
+    "background": "#08090b",
+    "ratio": 17.59,
+    "pass": true
+  },
+  {
+    "name": "Texto secundário",
+    "foreground": "#a7b0bf",
+    "background": "#111419",
+    "ratio": 8.44,
+    "pass": true
+  },
+  {
+    "name": "Coral na navegação",
+    "foreground": "#ff8c78",
+    "background": "#261c1c",
+    "ratio": 7.33,
+    "pass": true
+  },
+  {
+    "name": "Texto do botão",
+    "foreground": "#20120f",
+    "background": "#ff8c78",
+    "ratio": 8.03,
+    "pass": true
+  },
+  {
+    "name": "Texto do capítulo",
+    "foreground": "#221714",
+    "background": "#f18b78",
+    "ratio": 7.25,
+    "pass": true
+  },
+  {
+    "name": "Descrição do capítulo",
+    "foreground": "#4a2f28",
+    "background": "#f18b78",
+    "ratio": 5.04,
+    "pass": true
+  },
+  {
+    "name": "Rótulo do capítulo",
+    "foreground": "#53332d",
+    "background": "#f18b78",
+    "ratio": 4.63,
+    "pass": true
+  },
+  {
+    "name": "Feedback correto",
+    "foreground": "#adecf4",
+    "background": "#11262c",
+    "ratio": 12.02,
+    "pass": true
+  },
+  {
+    "name": "Feedback incorreto",
+    "foreground": "#ffc1b3",
+    "background": "#2d1d1a",
+    "ratio": 10.39,
+    "pass": true
+  },
+  {
+    "name": "Ciano",
+    "foreground": "#75e3ee",
+    "background": "#08090b",
+    "ratio": 13.26,
+    "pass": true
+  }
+]

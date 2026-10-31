@@ -1,0 +1,68 @@
+{
+  "contract": "../../DESIGN.md: trilha como tela inicial; tema preto, coral e ciano; aulas por URL; navegação e foco de teclado; estados de conta e conteúdo explícitos.",
+  "targetViewports": [
+    "1440x900",
+    "390x844"
+  ],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "Campos rotulados e foco visível inspecionados nas capturas; Tab verificado no Chrome; CSS de movimento reduzido sem transição; dez pares de cores auditados acima de 4,5:1 em contrast.json. Leitor de tela não foi testado."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "Capturas em 1440x900 e 390x844, com títulos longos de capítulos, seletores de pares e fluxograma. Asserções de scrollWidth <= innerWidth passaram no celular."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "pass",
+      "evidence": "Consulta /api/me atrasada intencionalmente no teste; main mostra carregamento com aria-busy. desktop-loading.png."
+    },
+    "empty": {
+      "status": "pass",
+      "evidence": "Visitante sem conclusões abre Praticar; explicação e link para começar. desktop-empty.png."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "Login inválido exibe erro explícito e preserva o formulário para nova tentativa. desktop-auth-error.png."
+    },
+    "partial": {
+      "status": "pass",
+      "evidence": "Catálogo diferencia lições disponíveis de 40 previstas; unidades sem aulas mostram preparação. mobile-capitulos.png."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "Teste verifica a tela Lição concluída após duas atividades legadas e após oito atividades de C#, além de recompensa idempotente. browser-results.json."
+    },
+    "permission": {
+      "status": "pass",
+      "evidence": "Perfil de visitante oferece criação e entrada sem exibir progresso de conta anterior; GET /api/progress sem sessão retorna 401 nos testes de backend. desktop-visitor.png."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "1440x900",
+      "artifact": "desktop-trilha.png",
+      "observation": "Menu lateral de seis itens, capítulo coral, trilha e Bit no painel direito; tema preto."
+    },
+    {
+      "viewport": "1440x900",
+      "artifact": "desktop-aula.png",
+      "observation": "Aula dedicada com campo digitável, foco ciano e barra de progresso."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "mobile-trilha.png",
+      "observation": "Trilha adaptada à largura e navegação inferior com os seis destinos."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "mobile-fluxograma.png",
+      "observation": "Fluxograma específico do estoque, com losango e caminhos Sim/Não legíveis."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "mobile-pares.png",
+      "observation": "Associação por seletores com rótulos persistentes em layout vertical."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+import http from 'node:http';
+import https from 'node:https';
+import {readFileSync,existsSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+const envFile=fileURLToPath(new URL('.env.local',import.meta.url));if(process.env.NODE_ENV!=='production'&&existsSync(envFile))process.loadEnvFile(envFile);
+const {createHandler}=await import('./http-handler.mjs');
+const tls=process.env.LINCODE_TLS_CERT&&process.env.LINCODE_TLS_KEY;
+if(process.env.NODE_ENV==='production'&&!tls)throw Error('HTTPS obrigatório: configure certificado e chave TLS.');
+const options=tls?{cert:readFileSync(process.env.LINCODE_TLS_CERT),key:readFileSync(process.env.LINCODE_TLS_KEY)}:{};
+const server=tls?https.createServer(options,createHandler()):http.createServer(createHandler());
+server.requestTimeout=15000;server.headersTimeout=10000;server.keepAliveTimeout=5000;server.maxConnections=200;
+server.listen(Number(process.env.PORT??8787),'127.0.0.1',()=>console.log(`Lincode: ${tls?'https':'http'}://127.0.0.1:${server.address().port} — Ctrl+C para encerrar.`));
+server.on('error',e=>{console.error('Não foi possível iniciar o servidor:',e.message);process.exitCode=1;});
