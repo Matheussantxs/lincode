@@ -43,7 +43,7 @@ Os capítulos Python 8–11 preservam NumPy, Pandas, Statsmodels e Machine Learn
 
 ## Recursos implementados
 
-- Fundo preto, superfícies grafite, coral e ciano; Bit, robô vetorial com quatro expressões.
+- Design editorial Steep (fundo Paper White, superfícies Mist Gray e Fog White, acento Blush Peach e Sienna Brown, tipografia serifada e controles em pill); Bit, robô vetorial com quatro expressões.
 - Menu Aprender, Praticar, Missões, Projetos, Perfil e Mais.
 - Catálogo com temas, pré-requisitos sugeridos e progresso; trilha vertical dentro do capítulo.
 - Aulas com endereço próprio, barra de progresso, respostas digitadas e retomada após recarregar.

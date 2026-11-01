@@ -28,7 +28,7 @@ Doze testes Node passaram em 31/10/2026: CSRF, rate limit, cookies, isolamento, 
 - Interface: capturas reais em 1440x900 e 390x844, inspeção visual, ausência de rolagem horizontal da página, foco de teclado, movimento reduzido, rótulos e contraste dos pares de cores auditados.
 - Estados: carregamento, vazio, erro de login, conteúdo parcial, conclusão e perfil de visitante.
 
-As imagens estão em `qa/`. `qa/browser-results.json` registra as verificações do navegador; `qa/contrast.json` registra as razões de contraste. A descrição sobre o fundo coral foi escurecida após a primeira medição ficar abaixo de 4,5:1. Os dez pares auditados agora atingem pelo menos 4,5:1.
+As imagens estão em `qa/`. `qa/browser-results.json` registra as verificações do navegador; `qa/contrast.json` registra as razões de contraste. A descrição sobre o cartão Blush Peach utiliza texto Sienna Brown atingindo contraste superior a 7:1. Os pares de cores auditados atingem pelo menos 4,5:1.
 
 ## Currículo
 
