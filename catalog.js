@@ -80,6 +80,7 @@ function courseChapters(lang) {
     // Novas atividades das lições legadas e lições novas, por número de unidade (1-based).
     for(const l of result[0].units[0].lessons)l.questions.push(...(window.PYTHON_LOGIC_EXTRA?.[l.id]||[]));
     for(const [n,lessons] of Object.entries(window.PYTHON_LOGIC_UNITS||{}))result[0].units[n-1].lessons.push(...lessons);
+    for(const [chId,map] of Object.entries(window.PYTHON_CHAPTER_UNITS||{})){const ch=result.find(c=>c.id===chId);if(ch)for(const [n,ls] of Object.entries(map))ch.units[n-1].lessons.push(...ls);}
   }
   else {
     const seeds=window.LINCODE_CONTENT?.[lang.id];

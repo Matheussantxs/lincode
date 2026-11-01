@@ -1,6 +1,6 @@
 # Lincode
 
-Versão local renomeada para **Lincode**. Abra `Iniciar.cmd` e acesse http://127.0.0.1:8787. Código, conteúdo e documentação estão nesta pasta. O currículo continua em desenvolvimento (138 lições/1.104 atividades); esta entrega não representa as 3.000 lições planejadas.
+Versão local renomeada para **Lincode**. Abra `Iniciar.cmd` e acesse http://127.0.0.1:8787. Código, conteúdo e documentação estão nesta pasta. O currículo continua em desenvolvimento (223 lições/1.784 atividades); esta entrega não representa as 3.000 lições planejadas.
 
 Repositório: https://github.com/Matheussantxs/lincode (privado). O envio não inclui `.env.local`, dados de contas, chaves, ferramentas instaladas ou referências de terceiros. Identificadores internos do banco que já estavam aplicados foram preservados para compatibilidade.
 
@@ -13,7 +13,6 @@ URL, chave publishable e segredo de sessão configurados em `.env.local`, ignora
 Verificador Supabase: somente aviso informativo de ausência de políticas na tabela privada do limitador, intencional para negar acesso direto. Não é um relatório Strix. Vercel está instalado, mas suas ferramentas ainda não foram disponibilizadas nesta sessão. GitHub/Vercel ainda não publicados.
 
 Evidências: `docs/qa/supabase-results.json`. Este estado substitui menções anteriores a projeto não criado ou RLS não executada.
-
 
 Aprendizado de programação em português, organizado por linguagem, com lógica, fluxogramas e orientação a objetos. Última atualização: 31/10/2026.
 
@@ -29,16 +28,16 @@ Abra http://127.0.0.1:8787. Requisito: Node.js 22 ou superior. O aplicativo não
 
 ## Estado atual
 
-O catálogo possui os **75 capítulos** aprovados. Há **138 lições disponíveis e 1.104 atividades** (8 atividades em todas as lições publicadas, com o capítulo 1 de lógica Python completo com 40/40 lições). A meta continua sendo **3.000 lições e 24.000 atividades**; o currículo completo ainda não foi escrito nem revisado. Cada capítulo tem oito unidades planejadas.
+O catálogo possui os **75 capítulos** aprovados. Há **223 lições disponíveis e 1.784 atividades** (8 atividades em todas as lições publicadas, todos os 75 capítulos com aulas ativas e os capítulos 1 e 2 de Python completos com 40/40 lições). A meta continua sendo **3.000 lições e 24.000 atividades**; o currículo completo ainda não foi escrito nem revisado. Cada capítulo tem oito unidades planejadas.
 
 | Trilha | Capítulos | Lições disponíveis | Meta de lições |
 |---|---:|---:|---:|
-| Python | 11 | 66 | 440 |
-| JavaScript | 16 | 14 | 640 |
-| Java | 16 | 14 | 640 |
+| Python | 11 | 103 | 440 |
+| JavaScript | 16 | 30 | 640 |
+| Java | 16 | 30 | 640 |
 | C# | 16 | 30 | 640 |
-| C++ | 16 | 14 | 640 |
-| Total | 75 | 138 | 3.000 |
+| C++ | 16 | 30 | 640 |
+| Total | 75 | 223 | 3.000 |
 
 Os capítulos Python 8–11 preservam NumPy, Pandas, Statsmodels e Machine Learning/MLOps. Não são usados exercícios vazios para completar a contagem. O catálogo diferencia conteúdo disponível de unidades em preparação.
 
@@ -78,7 +77,6 @@ O último comando **deve falhar enquanto o currículo estiver incompleto**. O re
 - [Validação](docs/VALIDACAO.md)
 - [Sistema visual](DESIGN.md)
 - [Histórico da conversa](chat.md)
-- [9Router](docs/9ROUTER.md)
 
 ## Referências e ferramentas
 
@@ -86,4 +84,4 @@ Awesome Design MD está em `references/awesome-design-md`; Humanizer está em `r
 
 O 9Router está instalado em `tools/9router`, com dados locais em `.local/9router`. Consulte o guia separado para conectar o OpenRouter. A revisão por Ruflo com provedor real continua pendente; instalação não comprova inferência funcionando.
 
-Código, conteúdo, documentação e evidências estão reunidos nesta pasta. A publicação depende da conexão das contas e da validação do banco remoto. `.data/`, `.local/`, credenciais e a instalação local do 9Router estão excluídos do Git.
+Código, conteúdo, documentação e evidências estão reunidos nesta pasta. A publicação depende da conexão das contas e da validação do banco remoto. `.data/`, `.local/`, `tools/` e credenciais estão excluídos do Git.

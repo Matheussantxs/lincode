@@ -17,7 +17,6 @@ Atualizado em 31/10/2026. O plano de expansão substitui as contagens antigas do
 - Testar com leitor de tela e dispositivos físicos; ampliar cobertura de navegadores.
 - Acrescentar testes de falha de conexão durante cadastro e sincronização e de concorrência prolongada entre abas.
 - Decidir uma política de recuperação de contas antes de qualquer publicação pública.
-- Validar a integração real entre 9Router, OpenRouter e Ruflo sem incluir chaves no Git.
 - Preparar licenças e revisão de referências antes da publicação no GitHub, que permanece adiada.
 
 ## Concluído nesta etapa

@@ -9,11 +9,9 @@ Atualizado em 31/10/2026.
 | Contas e persistência local | Implementada e testada | Revisão adicional para implantação pública, quando solicitada |
 | Interface e motor de aulas | Implementados nos formatos atuais | Testar com leitor de tela e mais dispositivos |
 | Catálogo de cinco linguagens | 75 capítulos e 600 unidades definidos | Refinar objetivos conforme autoria das aulas |
-| Autoria do currículo | 111/3.000 lições; 348/24.000 atividades | Escrever as lições restantes e expandir as 90 legadas |
+| Autoria do currículo | 223/3.000 lições; 1.784/24.000 atividades | Expandir os 73 capítulos parciais até 40 lições cada |
 | Revisão técnica e pedagógica | Parcial | Conferir todos os gabaritos, exemplos e pré-requisitos |
 | Projetos graduais | Etapas e temas definidos | Desenvolver 40 aulas reais por projeto final |
-| 9Router | Instalado localmente | Validar conexão ao OpenRouter e inferência |
-| Ruflo | Integração pendente | Configurar provedor e executar revisão real |
 | Publicação no GitHub | Adiada pelo usuário | Autorização posterior e revisão dos arquivos publicáveis |
 
 ## Ordem de trabalho

@@ -32,9 +32,9 @@ As imagens estão em `qa/`. `qa/browser-results.json` registra as verificações
 
 ## Currículo
 
-Validador estrutural: 75 capítulos, oito unidades em cada capítulo, 138 lições e 1.104 atividades disponíveis (todas as 138 lições com oito atividades; capítulo Python de lógica completo com 40/40 lições). Verifica IDs de lições e atividades, pré-requisitos, tamanho das unidades e formato dos gabaritos.
+Validador estrutural: 75 capítulos, oito unidades em cada capítulo, 223 lições e 1.784 atividades disponíveis (todas as 223 lições com oito atividades; capítulos Python de lógica e fundamentos completos com 40/40 lições e todos os 75 capítulos com aulas ativas). Verifica IDs de lições e atividades, pré-requisitos, tamanho das unidades e formato dos gabaritos.
 
-**O aceite de completude continua reprovado:** faltam 2.862 lições e 22.896 atividades para a meta. Nenhuma lição publicada permanece com menos de oito atividades, mas os outros 74 capítulos ainda precisam ser expandidos até 40 lições e revisados.
+**O aceite de completude continua reprovado:** faltam 2.777 lições e 22.216 atividades para a meta. Nenhuma lição publicada permanece com menos de oito atividades, mas os outros 73 capítulos ainda precisam ser expandidos até 40 lições e revisados.
 
 ## Reproduzir
 
@@ -45,10 +45,10 @@ node scripts/validate-curriculum.mjs --complete
 node tests/browser.mjs
 ```
 
-O comando `--complete` retorna código 1 enquanto faltarem lições/atividades. O teste de navegador usa Chrome em `C:/Program Files/Google/Chrome/Application/chrome.exe` e o playwright-core da instalação local do 9Router. Ele inicia um servidor temporário, usa contas de teste e encerra seu servidor e navegador ao terminar. Não usa contas reais do projeto.
+O comando `--complete` retorna código 1 enquanto faltarem lições/atividades. O teste de navegador usa Chrome em `C:/Program Files/Google/Chrome/Application/chrome.exe` e o playwright-core instalado localmente (ignorado pelo Git). Ele inicia um servidor temporário, usa contas de teste e encerra seu servidor e navegador ao terminar. Não usa contas reais do projeto.
 
 ## Limites
 
 Não houve auditoria com leitor de tela, testes em Safari/Firefox, homologação em telefone físico ou auditoria de segurança para exposição pública. As medições de contraste cobrem os pares especificados, não todos os pixels possíveis. O validador estrutural não prova correção pedagógica nem originalidade de todos os problemas.
 
-Os pré-requisitos entre capítulos são sugestões, não bloqueios. A integração com o Supabase aguarda provisionamento; recuperação de senha ainda não possui fluxo de interface. O progresso não é antifraude. Integração Ruflo/OpenRouter e revisão por IA permanecem sem comprovação de inferência. Não houve publicação no GitHub.
+Os pré-requisitos entre capítulos são sugestões, não bloqueios. A integração com o Supabase aguarda provisionamento; recuperação de senha ainda não possui fluxo de interface. O progresso não é antifraude. Não houve publicação no GitHub.

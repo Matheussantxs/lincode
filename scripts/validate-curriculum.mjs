@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
 const root=new URL('../',import.meta.url),context=vm.createContext({window:{}});
-for(const f of ['curriculum.js','python-chapters.js','intro.js','content/csharp.js','content/python-fluxos.js','content/python-logica-a.js','content/python-logica-b.js','content/python-logica-extra.js','content/extra-javascript.js','content/extra-java.js','content/extra-csharp.js','content/extra-cpp.js','content/extra-python-1.js','content/extra-python-2.js','catalog.js'])vm.runInContext(await fs.readFile(new URL(f,root),'utf8'),context,{filename:f});
+for(const f of ['curriculum.js','python-chapters.js','intro.js','content/javascript.js','content/java.js','content/csharp.js','content/cpp.js','content/python-fluxos.js','content/python-logica-a.js','content/python-logica-b.js','content/python-logica-extra.js','content/python-fundamentos-a.js','content/python-fundamentos-b.js','content/python-fundamentos-c.js','content/extra-javascript.js','content/extra-java.js','content/extra-csharp.js','content/extra-cpp.js','content/extra-python-1.js','content/extra-python-2.js','catalog.js'])vm.runInContext(await fs.readFile(new URL(f,root),'utf8'),context,{filename:f});
 const courses=JSON.parse(vm.runInContext('JSON.stringify(LANGUAGES.map(l=>({id:l.id,chapters:courseChapters(l)})))',context));
 let chapters=0,lessons=0,activities=0;const missing=[],ids=new Set(),activityIds=new Set();
 for(const course of courses){assert.equal(course.chapters.length,course.id==='python'?11:16);for(const [i,ch]of course.chapters.entries()){
