@@ -9,7 +9,7 @@ Atualizado em 31/10/2026.
 | Contas e persistência local | Implementada e testada | Revisão adicional para implantação pública, quando solicitada |
 | Interface e motor de aulas | Implementados nos formatos atuais | Testar com leitor de tela e mais dispositivos |
 | Catálogo de cinco linguagens | 75 capítulos e 600 unidades definidos | Refinar objetivos conforme autoria das aulas |
-| Autoria do currículo | 223/3.000 lições; 1.784/24.000 atividades | Expandir os 73 capítulos parciais até 40 lições cada |
+| Autoria do currículo | 304/3.000 lições; 2.432/24.000 atividades | Expandir os 73 capítulos parciais até 40 lições cada |
 | Revisão técnica e pedagógica | Parcial | Conferir todos os gabaritos, exemplos e pré-requisitos |
 | Projetos graduais | Etapas e temas definidos | Desenvolver 40 aulas reais por projeto final |
 | Publicação no GitHub | Adiada pelo usuário | Autorização posterior e revisão dos arquivos publicáveis |

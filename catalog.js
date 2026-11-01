@@ -93,6 +93,7 @@ function courseChapters(lang) {
       if(lesson.id==='funcoes')target=4;
       result[target].units[0].lessons.push(lesson);
     }
+    for(const [chId,map] of Object.entries(window.LINCODE_CHAPTER_UNITS?.[lang.id]||{})){const ch=result.find(c=>c.id===chId);if(ch)for(const [n,ls] of Object.entries(map))ch.units[n-1].lessons.push(...ls);}
   }
   result.forEach((c,i)=>{
     c.targetLessonCount=40;c.prerequisites=i?[result[i-1].id]:[];
