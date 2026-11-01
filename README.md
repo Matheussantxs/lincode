@@ -1,6 +1,6 @@
 # Lincode
 
-Versão local renomeada para **Lincode**. Abra `Iniciar.cmd` e acesse http://127.0.0.1:8787. Código, conteúdo e documentação estão nesta pasta. O currículo continua em desenvolvimento (404 lições/3.232 atividades); esta entrega não representa as 3.000 lições planejadas.
+Versão local renomeada para **Lincode**. Abra `Iniciar.cmd` e acesse http://127.0.0.1:8787. Código, conteúdo e documentação estão nesta pasta. O currículo continua em desenvolvimento (474 lições/3.792 atividades); esta entrega não representa as 3.000 lições planejadas.
 
 Repositório: https://github.com/Matheussantxs/lincode (privado). O envio não inclui `.env.local`, dados de contas, chaves, ferramentas instaladas ou referências de terceiros. Identificadores internos do banco que já estavam aplicados foram preservados para compatibilidade.
 
@@ -28,16 +28,16 @@ Abra http://127.0.0.1:8787. Requisito: Node.js 22 ou superior. O aplicativo não
 
 ## Estado atual
 
-O catálogo possui os **75 capítulos** aprovados. Há **404 lições disponíveis e 3.232 atividades** (8 atividades em todas as lições publicadas, 7 capítulos com 40/40 lições completas e prontas: Python lógica, fundamentos e POO; e capítulo 1 de JavaScript, Java, C# e C++). A meta continua sendo **3.000 lições e 24.000 atividades**; o currículo completo ainda não foi escrito nem revisado. Cada capítulo tem oito unidades planejadas.
+O catálogo possui os **75 capítulos** aprovados. Há **474 lições disponíveis e 3.792 atividades** (8 atividades em todas as lições publicadas, 7 capítulos completos com 40/40 e unidades 1 a 4 expandidas para Python estruturas e capítulo 2 de JavaScript, Java, C# e C++). A meta continua sendo **3.000 lições e 24.000 atividades**; o currículo completo ainda não foi escrito nem revisado. Cada capítulo tem oito unidades planejadas.
 
 | Trilha | Capítulos | Lições disponíveis | Meta de lições |
 |---|---:|---:|---:|
-| Python | 11 | 140 | 440 |
-| JavaScript | 16 | 66 | 640 |
-| Java | 16 | 66 | 640 |
-| C# | 16 | 66 | 640 |
-| C++ | 16 | 66 | 640 |
-| Total | 75 | 404 | 3.000 |
+| Python | 11 | 158 | 440 |
+| JavaScript | 16 | 79 | 640 |
+| Java | 16 | 79 | 640 |
+| C# | 16 | 79 | 640 |
+| C++ | 16 | 79 | 640 |
+| Total | 75 | 474 | 3.000 |
 
 Os capítulos Python 8–11 preservam NumPy, Pandas, Statsmodels e Machine Learning/MLOps. Não são usados exercícios vazios para completar a contagem. O catálogo diferencia conteúdo disponível de unidades em preparação.
 
