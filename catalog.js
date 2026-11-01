@@ -77,6 +77,9 @@ function courseChapters(lang) {
   if(lang.id==='python') {
     result=old.map((c,n)=>({...c,title:c.label,units:PYTHON_UNITS[n].split('|').map((title,i)=>({id:`${c.id}-u${i+1}`,title,objective:`Aplicar ${title.toLowerCase()} e explicar o resultado de um exemplo em Python.`,lessons:i===0?c.lessons:[]}))}));
     result[0].units[2].lessons=window.PYTHON_FLOW_LESSONS||[];
+    // Novas atividades das lições legadas e lições novas, por número de unidade (1-based).
+    for(const l of result[0].units[0].lessons)l.questions.push(...(window.PYTHON_LOGIC_EXTRA?.[l.id]||[]));
+    for(const [n,lessons] of Object.entries(window.PYTHON_LOGIC_UNITS||{}))result[0].units[n-1].lessons.push(...lessons);
   }
   else {
     const seeds=window.LINCODE_CONTENT?.[lang.id];
@@ -94,6 +97,7 @@ function courseChapters(lang) {
     c.targetLessonCount=40;c.prerequisites=i?[result[i-1].id]:[];
     for(let u=0;u<c.units.length-1;u++)if(c.units[u].lessons.length>5)c.units[u+1].lessons.unshift(...c.units[u].lessons.splice(5));
     c.lessons=c.units.flatMap(u=>u.lessons);
+    c.lessons.forEach(l=>l.questions.push(...(window.LINCODE_EXTRA?.[lang.id]?.[l.id]||[])));
     c.lessons.forEach(l=>l.questions.forEach((q,j)=>{q.id=q.id||`${lang.id}:${l.id}:a${j+1}`;}));
     c.authoringStatus=c.lessons.length===40&&c.lessons.every(l=>l.questions.length===8)?'ready':'partial';
   });

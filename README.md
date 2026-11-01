@@ -1,6 +1,6 @@
 # Lincode
 
-Versão local renomeada para **Lincode**. Abra `Iniciar.cmd` e acesse http://127.0.0.1:8787. Código, conteúdo e documentação estão nesta pasta. O currículo continua em desenvolvimento (111 lições/348 atividades); esta entrega não representa as 3.000 lições planejadas.
+Versão local renomeada para **Lincode**. Abra `Iniciar.cmd` e acesse http://127.0.0.1:8787. Código, conteúdo e documentação estão nesta pasta. O currículo continua em desenvolvimento (138 lições/1.104 atividades); esta entrega não representa as 3.000 lições planejadas.
 
 Repositório: https://github.com/Matheussantxs/lincode (privado). O envio não inclui `.env.local`, dados de contas, chaves, ferramentas instaladas ou referências de terceiros. Identificadores internos do banco que já estavam aplicados foram preservados para compatibilidade.
 
@@ -29,16 +29,16 @@ Abra http://127.0.0.1:8787. Requisito: Node.js 22 ou superior. O aplicativo não
 
 ## Estado atual
 
-O catálogo possui os **75 capítulos** aprovados. Há **111 lições disponíveis e 348 atividades**. A meta continua sendo **3.000 lições e 24.000 atividades**; o currículo completo ainda não foi escrito nem revisado. Cada capítulo tem oito unidades planejadas. As cinco novas lições de fluxogramas e as 16 lições de C# possuem oito atividades; 90 lições herdadas ainda possuem duas.
+O catálogo possui os **75 capítulos** aprovados. Há **138 lições disponíveis e 1.104 atividades** (8 atividades em todas as lições publicadas, com o capítulo 1 de lógica Python completo com 40/40 lições). A meta continua sendo **3.000 lições e 24.000 atividades**; o currículo completo ainda não foi escrito nem revisado. Cada capítulo tem oito unidades planejadas.
 
 | Trilha | Capítulos | Lições disponíveis | Meta de lições |
 |---|---:|---:|---:|
-| Python | 11 | 39 | 440 |
+| Python | 11 | 66 | 440 |
 | JavaScript | 16 | 14 | 640 |
 | Java | 16 | 14 | 640 |
 | C# | 16 | 30 | 640 |
 | C++ | 16 | 14 | 640 |
-| Total | 75 | 111 | 3.000 |
+| Total | 75 | 138 | 3.000 |
 
 Os capítulos Python 8–11 preservam NumPy, Pandas, Statsmodels e Machine Learning/MLOps. Não são usados exercícios vazios para completar a contagem. O catálogo diferencia conteúdo disponível de unidades em preparação.
 

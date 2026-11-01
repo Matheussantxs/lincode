@@ -25,11 +25,12 @@ try{
  await page.getByRole('button',{name:'Tentar de novo',exact:true}).click();await page.locator('[data-answer="0"]').click();await page.getByRole('button',{name:'Verificar',exact:true}).click();await page.getByRole('button',{name:'Continuar',exact:true}).click();
  await page.locator('#written-answer').fill('Py');await page.reload();await page.locator('#written-answer').waitFor();assert.equal(await page.locator('#written-answer').inputValue(),'Py');
  await page.locator('#written-answer').fill('python');await page.screenshot({path:path.join(out,'desktop-aula.png')});
- await page.locator('#written-answer').press('Enter');await page.getByRole('button',{name:'Continuar',exact:true}).click();await page.getByRole('heading',{name:'Lição concluída!',exact:true}).waitFor();
+ const solveStep=async()=>{const q=await page.evaluate(()=>session.lesson.questions[session.index]);if(q.type==='choice')await page.locator(`[data-answer="${q.answer}"]`).click();else if(q.type==='text'||q.type==='gap')await page.locator('#written-answer').fill(q.accepted[0]);else if(q.type==='order')for(const i of q.answer)await page.locator(`[data-block="${i}"]`).click();else if(q.type==='pairs')for(let i=0;i<q.pairs.length;i++)await page.locator(`[data-pair="${i}"]`).selectOption(String(i));await page.getByRole('button',{name:'Verificar',exact:true}).click();await page.getByText('Isso mesmo!',{exact:true}).waitFor();await page.getByRole('button',{name:'Continuar',exact:true}).click();};
+ await page.locator('#written-answer').press('Enter');await page.getByRole('button',{name:'Continuar',exact:true}).click();for(let step=2;step<8;step++)await solveStep();await page.getByRole('heading',{name:'Lição concluída!',exact:true}).waitFor();
  assert.equal(await page.evaluate(()=>state.completed.length),1);assert.equal(await page.evaluate(()=>state.activity[dateKey()]),20);
  await page.getByRole('button',{name:'Voltar à trilha'}).click();
  await page.locator('.lesson-node.done').first().click();await page.getByRole('button',{name:/Vamos praticar/}).click();
- await page.locator('[data-answer="0"]').click();await page.getByRole('button',{name:'Verificar',exact:true}).click();await page.getByRole('button',{name:'Continuar',exact:true}).click();await page.locator('#written-answer').fill('Python');await page.locator('#written-answer').press('Enter');await page.getByRole('button',{name:'Continuar',exact:true}).click();
+ for(let step=0;step<8;step++)await solveStep();await page.getByRole('heading',{name:'Lição concluída!',exact:true}).waitFor();
  assert.equal(await page.evaluate(()=>state.activity[dateKey()]),20);await page.getByRole('button',{name:'Voltar à trilha'}).click();
  await page.getByRole('button',{name:'Criar conta',exact:true}).click();
  await page.locator('#account-form [name=name]').fill('Pessoa QA');await page.locator('#account-form [name=email]').fill('qa@example.test');await page.locator('#account-form [name=password]').fill('local-test-password');await page.getByRole('button',{name:'Criar conta e salvar progresso',exact:true}).click();await page.waitForFunction(()=>user?.email==='qa@example.test'&&!document.querySelector('#account-dialog').open);
@@ -69,7 +70,7 @@ try{
  await guest.locator('#account-content [data-close-account]').first().click();
  await guest.screenshot({path:path.join(out,'desktop-visitor.png')});
  // Load a later lesson using a completed-prerequisite fixture, then inspect its actual diagram and keyboard controls.
- await guest.evaluate(()=>{state.completed=chapters()[0].lessons.slice(0,9).map(l=>'python:'+l.id);state.onboarded=true;save();location.hash='aula/python/py-fluxo-estoque';});
+ await guest.evaluate(()=>{const ls=chapters()[0].lessons;state.completed=ls.slice(0,ls.findIndex(l=>l.id==='py-fluxo-estoque')).map(l=>'python:'+l.id);state.onboarded=true;save();location.hash='aula/python/py-fluxo-estoque';});
  await guest.getByRole('button',{name:/Vamos praticar/}).click();await guest.getByText('estoque ≥ pedido?',{exact:true}).waitFor();
  await guest.setViewportSize({width:390,height:844});await guest.screenshot({path:path.join(out,'mobile-fluxograma.png')});
  assert.ok(await guest.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));

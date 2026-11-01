@@ -32,9 +32,9 @@ As imagens estão em `qa/`. `qa/browser-results.json` registra as verificações
 
 ## Currículo
 
-Validador estrutural: 75 capítulos, oito unidades em cada capítulo, 111 lições e 348 atividades disponíveis. Verifica IDs de lições e atividades, pré-requisitos, tamanho das unidades e formato dos gabaritos.
+Validador estrutural: 75 capítulos, oito unidades em cada capítulo, 138 lições e 1.104 atividades disponíveis (todas as 138 lições com oito atividades; capítulo Python de lógica completo com 40/40 lições). Verifica IDs de lições e atividades, pré-requisitos, tamanho das unidades e formato dos gabaritos.
 
-**O aceite de completude continua reprovado:** faltam 2.889 lições e 23.652 atividades para a meta. Noventa lições existentes ainda possuem duas atividades, e precisam ser expandidas para oito. As 21 lições novas com oito atividades não substituem a revisão de todo o currículo.
+**O aceite de completude continua reprovado:** faltam 2.862 lições e 22.896 atividades para a meta. Nenhuma lição publicada permanece com menos de oito atividades, mas os outros 74 capítulos ainda precisam ser expandidos até 40 lições e revisados.
 
 ## Reproduzir
 
