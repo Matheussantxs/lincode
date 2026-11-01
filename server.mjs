@@ -2,7 +2,7 @@ import http from 'node:http';
 import https from 'node:https';
 import {readFileSync,existsSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
-const envFile=fileURLToPath(new URL('.env.local',import.meta.url));if(process.env.NODE_ENV!=='production'&&existsSync(envFile))process.loadEnvFile(envFile);
+const envFile=process.env.LINCODE_ENV_FILE||fileURLToPath(new URL('.env.local',import.meta.url));if(process.env.NODE_ENV!=='production'&&existsSync(envFile))process.loadEnvFile(envFile);
 const {createHandler}=await import('./http-handler.mjs');
 const tls=process.env.LINCODE_TLS_CERT&&process.env.LINCODE_TLS_KEY;
 if(process.env.NODE_ENV==='production'&&!tls)throw Error('HTTPS obrigatório: configure certificado e chave TLS.');
