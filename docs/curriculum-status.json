@@ -1,18 +1,14 @@
 {
   "chapters": 75,
-  "lessons": 2883,
-  "activities": 23064,
+  "lessons": 3000,
+  "activities": 24000,
   "target": {
     "chapters": 75,
     "lessons": 3000,
     "activities": 24000
   },
   "structuralValidation": "pass",
-  "complete": false,
+  "complete": true,
   "reviewStatus": "pending",
-  "missing": [
-    "java/java-c16: 1/40 lessons",
-    "csharp/csharp-c16: 1/40 lessons",
-    "cpp/cpp-c16: 1/40 lessons"
-  ]
+  "missing": []
 }
