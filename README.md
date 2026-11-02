@@ -28,16 +28,16 @@ Abra http://127.0.0.1:8787. Requisito: Node.js 22 ou superior. O aplicativo não
 
 ## Estado atual
 
-O catálogo possui os **75 capítulos** aprovados. Há **962 lições disponíveis e 7.696 atividades** (8 atividades em todas as lições publicadas, 22 capítulos com 40/40 lições completas e prontas: Python lógica, fundamentos, POO, estruturas de dados, arquivos e qualidade; e capítulos 1, 2, 3 e 4 de JavaScript, Java, C# e C++). A meta continua sendo **3.000 lições e 24.000 atividades**; o currículo completo ainda não foi escrito nem revisado. Cada capítulo tem oito unidades planejadas.
+O catálogo possui os **75 capítulos** aprovados. Há **1.341 lições disponíveis e 10.728 atividades** (8 atividades em todas as lições publicadas, 32 capítulos com 40/40 lições completas e prontas: Python lógica, fundamentos, POO, estruturas de dados, arquivos, qualidade, dados e numpy; e capítulos 1 a 6 de JavaScript, Java, C# e C++). A meta continua sendo **3.000 lições e 24.000 atividades**; o currículo completo continua em expansão por ondas. Cada capítulo tem oito unidades planejadas.
 
 | Trilha | Capítulos | Lições disponíveis | Meta de lições |
 |---|---:|---:|---:|
-| Python | 11 | 254 | 440 |
-| JavaScript | 16 | 177 | 640 |
-| Java | 16 | 177 | 640 |
-| C# | 16 | 177 | 640 |
-| C++ | 16 | 177 | 640 |
-| Total | 75 | 962 | 3.000 |
+| Python | 11 | 329 | 440 |
+| JavaScript | 16 | 253 | 640 |
+| Java | 16 | 253 | 640 |
+| C# | 16 | 253 | 640 |
+| C++ | 16 | 253 | 640 |
+| Total | 75 | 1.341 | 3.000 |
 
 Os capítulos Python 8–11 preservam NumPy, Pandas, Statsmodels e Machine Learning/MLOps. Não são usados exercícios vazios para completar a contagem. O catálogo diferencia conteúdo disponível de unidades em preparação.
 
