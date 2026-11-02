@@ -1,7 +1,7 @@
 {
   "chapters": 75,
-  "lessons": 2103,
-  "activities": 16824,
+  "lessons": 2883,
+  "activities": 23064,
   "target": {
     "chapters": 75,
     "lessons": 3000,
@@ -11,28 +11,8 @@
   "complete": false,
   "reviewStatus": "pending",
   "missing": [
-    "javascript/javascript-c12: 1/40 lessons",
-    "javascript/javascript-c13: 1/40 lessons",
-    "javascript/javascript-c14: 1/40 lessons",
-    "javascript/javascript-c15: 1/40 lessons",
-    "javascript/javascript-c16: 1/40 lessons",
-    "java/java-c11: 1/40 lessons",
-    "java/java-c12: 1/40 lessons",
-    "java/java-c13: 1/40 lessons",
-    "java/java-c14: 1/40 lessons",
-    "java/java-c15: 1/40 lessons",
     "java/java-c16: 1/40 lessons",
-    "csharp/csharp-c11: 1/40 lessons",
-    "csharp/csharp-c12: 1/40 lessons",
-    "csharp/csharp-c13: 1/40 lessons",
-    "csharp/csharp-c14: 1/40 lessons",
-    "csharp/csharp-c15: 1/40 lessons",
     "csharp/csharp-c16: 1/40 lessons",
-    "cpp/cpp-c11: 1/40 lessons",
-    "cpp/cpp-c12: 1/40 lessons",
-    "cpp/cpp-c13: 1/40 lessons",
-    "cpp/cpp-c14: 1/40 lessons",
-    "cpp/cpp-c15: 1/40 lessons",
     "cpp/cpp-c16: 1/40 lessons"
   ]
 }
