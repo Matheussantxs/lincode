@@ -71,6 +71,5 @@ O último comando **deve falhar enquanto o currículo estiver incompleto**. O re
 
 Awesome Design MD está em `references/awesome-design-md`; Humanizer está em `references/humanizer` e foi usado na revisão dos textos de interface e documentação. ECC orientou o contrato visual e a verificação; Ponytail orientou a manutenção do frontend sem framework adicional. REA havia observado a página pública acessível; as imagens enviadas pelo usuário orientaram a área de aprendizado. Não houve acesso autenticado ao produto de referência.
 
-O 9Router está instalado em `tools/9router`, com dados locais em `.local/9router`. Consulte o guia separado para conectar o OpenRouter. A revisão por Ruflo com provedor real continua pendente; instalação não comprova inferência funcionando.
 
 Código, conteúdo, documentação e evidências estão reunidos nesta pasta. A publicação depende da conexão das contas e da validação do banco remoto. `.data/`, `.local/`, `tools/` e credenciais estão excluídos do Git.
