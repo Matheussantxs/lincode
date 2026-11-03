@@ -1,7 +1,5 @@
 -- Migration: 202611030001_energy_system.sql
--- Description: Suporte a persistência e sincronização de energia (vidas/baterias) no Supabase.
-
-\connect -reuse-previous
+-- Description: Suporte a persistencia e sincronizacao de energia (vidas/baterias) no Supabase.
 
 begin;
 
