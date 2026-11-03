@@ -14,10 +14,17 @@
   --color-border-hairline: #e7e7ea;
   --color-border-subtle: #ececec;
 
+  /* Surfaces */
+  --surface-canvas: #ffffff;
+  --surface-card-mist: #f2f2f3;
+  --surface-section-fog: #fafafb;
+  --surface-accent-blush: #fbe1d1;
+  --surface-elevated-white: #ffffff;
+
   /* Lincode Mappings */
-  --bg: var(--color-paper-white);
-  --surface: var(--color-mist-gray);
-  --raised: var(--color-paper-white);
+  --bg: var(--surface-canvas);
+  --surface: var(--surface-card-mist);
+  --raised: var(--surface-elevated-white);
   --line: var(--color-border-subtle);
   --ink: var(--color-ink-black);
   --muted: var(--color-slate-gray);
@@ -25,22 +32,83 @@
   --cyan: var(--color-ink-black);
   --peach: var(--color-blush-peach);
 
-  /* Typography */
-  --font-serif: 'Signifier', 'GT Sectra', 'Tiempos Headline', 'Source Serif 4', Georgia, ui-serif, serif;
-  --font-sans: 'Sohne', Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Typography — Font Families */
+  --font-signifier: 'Signifier', 'GT Sectra', 'Tiempos Headline', 'Source Serif 4', Georgia, ui-serif, serif;
+  --font-sohne: 'Sohne', Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-signifier);
+  --font-sans: var(--font-sohne);
   --font-mono: Consolas, 'SF Mono', 'Courier New', monospace;
 
+  /* Typography — Scale */
+  --text-caption: 15px;
+  --leading-caption: 1.5;
+  --text-body: 17px;
+  --leading-body: 1.35;
+  --text-body-lg: 20px;
+  --leading-body-lg: 1.35;
+  --text-subheading: 22px;
+  --leading-subheading: 1.5;
+  --text-heading-sm: 26px;
+  --leading-heading-sm: 1.18;
+  --tracking-heading-sm: -0.23px;
+  --text-heading: 44px;
+  --leading-heading: 1.3;
+  --tracking-heading: -0.66px;
+  --text-heading-lg: 64px;
+  --leading-heading-lg: 1.3;
+  --tracking-heading-lg: -0.96px;
+  --text-display: 90px;
+  --leading-display: 1.3;
+  --tracking-display: -2.25px;
+
+  /* Typography — Weights */
+  --font-weight-regular: 400;
+  --font-weight-w430: 430;
+  --font-weight-w450: 450;
+  --font-weight-w480: 480;
+  --font-weight-medium: 500;
+
+  /* Spacing Scale (4px base) */
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+  --spacing-96: 96px;
+  --spacing-124: 124px;
+  --spacing-128: 128px;
+  --spacing-160: 160px;
+
   /* Shapes & Radii */
-  --radius-pill: 9999px;
-  --radius-card: 24px;
-  --radius-elevated: 20px;
-  --radius-input: 16px;
+  --radius-buttons: 9999px;
+  --radius-cards: 24px;
+  --radius-elevatedcards: 20px;
+  --radius-smallcards: 16px;
+  --radius-inputs: 16px;
+  --radius-images: 12px;
+
+  --radius-pill: var(--radius-buttons);
+  --radius-card: var(--radius-cards);
+  --radius-elevated: var(--radius-elevatedcards);
+  --radius-input: var(--radius-inputs);
   --radius: var(--radius-card);
 
+  /* Layout */
+  --page-max-width: 1200px;
+  --section-gap: 80px;
+  --card-padding: 20px;
+  --element-gap: 8px;
+
   /* Elevation Shadows */
-  --shadow-subtle: oklab(0 0 0 / 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.06) 0px 4px 20px 0px;
-  --shadow-subtle-2: oklab(0 0 0 / 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.08) 0px 8px 30px 0px;
-  --shadow-subtle-3: rgba(4, 23, 43, 0.04) 0px 0px 0px 1px, rgba(0, 0, 0, 0.08) 0px 20px 25px -5px, rgba(0, 0, 0, 0.05) 0px 8px 10px -6px;
+  --shadow-subtle: oklab(0 0 0 / 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.08) 0px 4px 24px 0px;
+  --shadow-subtle-2: oklab(0 0 0 / 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 8px 40px 0px;
+  --shadow-subtle-3: rgba(4, 23, 43, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px;
 
   font-family: var(--font-sans);
   color: var(--ink);
@@ -70,25 +138,31 @@ a { color: inherit; text-decoration: none; }
 h1, h2, h3, h4, p { margin: 0; }
 h1, h2 {
   font-family: var(--font-serif);
-  font-weight: 400; /* Signature Steep restraint: whisper authority at weight 400 */
-  line-height: 1.30;
+  font-weight: var(--font-weight-regular); /* Signature Steep restraint: whisper authority at weight 400 */
 }
 h1 {
-  font-size: clamp(28px, 3.2vw, 44px);
-  letter-spacing: -0.66px;
+  font-size: clamp(28px, 3.2vw, var(--text-heading));
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
 }
 h2 {
-  font-size: 24px;
-  letter-spacing: -0.3px;
+  font-size: var(--text-heading-sm);
+  line-height: var(--leading-heading-sm);
+  letter-spacing: var(--tracking-heading-sm);
+}
+h1 em, h1 i, h2 em, h2 i {
+  font-style: italic;
+  font-weight: var(--font-weight-regular);
 }
 h3 {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: -0.16px;
   line-height: 1.35;
 }
 h4 {
   font-size: 15px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   line-height: 1.4;
 }
 p { margin-top: 12px; }
@@ -265,16 +339,21 @@ main:focus { outline: 0; }
   color: var(--color-ink-black);
   border: 1px solid var(--color-border-hairline);
   font-family: var(--font-mono);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 500;
   border-radius: 10px;
   flex-shrink: 0;
+  transition: all 0.15s ease;
 }
-.language-tag.python { color: #855f19; background: #faf4e8; border-color: #eeddc2; }
-.language-tag.javascript { color: #7f6e16; background: #faf8e7; border-color: #eee7be; }
-.language-tag.csharp { color: #5c357f; background: #f6eefc; border-color: #dec8f0; }
-.language-tag.java { color: #803c27; background: #fcefe9; border-color: #f2cbbe; }
-.language-tag.cpp { color: #1c527e; background: #edf4fa; border-color: #c7ddf0; }
+.course-card.selected .language-tag,
+.course-switch .language-tag {
+  background: var(--color-ink-black);
+  color: var(--color-paper-white);
+  border-color: var(--color-ink-black);
+}
+.course-card:hover .language-tag {
+  border-color: var(--color-ink-black);
+}
 
 .stats {
   display: flex;
@@ -588,13 +667,19 @@ main:focus { outline: 0; }
   font-size: 13px;
 }
 
-/* Right Rail Panels (Neutral Cards) */
+/* Right Rail Panels (Floating Product Artifacts) */
 .right-rail { display: grid; gap: 24px; }
 .panel {
   padding: 24px;
   border: 1px solid var(--color-border-hairline);
   border-radius: var(--radius-card); /* 24px */
   background: var(--color-mist-gray); /* Steep Neutral Card */
+}
+.right-rail .panel {
+  background: var(--surface-elevated-white);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-elevatedcards); /* 20px */
+  box-shadow: var(--shadow-subtle-3); /* Floating Product Artifact elevation */
 }
 .panel h2 {
   font-size: 18px;
@@ -691,12 +776,12 @@ main:focus { outline: 0; }
   font-size: 13px;
   line-height: 1.6;
   color: var(--color-ink-black);
-  background: var(--color-paper-white);
-  border: 1px solid var(--color-border-subtle);
-  padding: 14px;
-  border-radius: 16px;
+  background: var(--surface-card-mist);
+  border: 1px solid var(--color-border-hairline);
+  padding: 16px;
+  border-radius: var(--radius-smallcards);
   margin-top: 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: none;
 }
 .bit-note > span {
   font-size: 10px;
@@ -1156,10 +1241,10 @@ dialog::backdrop {
   font-family: var(--font-mono);
   font-size: 14px;
   line-height: 1.8;
-  background: #f8f8fa;
-  border: 1px solid #e5e5e9;
+  background: var(--surface-section-fog);
+  border: 1px solid var(--color-border-subtle);
   padding: 22px 24px;
-  border-radius: 16px;
+  border-radius: var(--radius-inputs);
   overflow: auto;
   color: var(--color-ink-black);
   tab-size: 4;
@@ -1225,9 +1310,9 @@ dialog::backdrop {
   margin-top: 24px;
 }
 .feedback.correct {
-  background: #edf7ed;
-  border: 1px solid #c8e6c9;
-  color: #1e4620;
+  background: #f4f8f4;
+  border: 1px solid #dbe7db;
+  color: #1e3820;
 }
 .feedback.incorrect {
   background: var(--color-blush-peach); /* Steep Peach Accent */
