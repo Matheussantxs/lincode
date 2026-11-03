@@ -545,6 +545,12 @@ main:focus { outline: 0; }
   display: flex;
   gap: 16px;
   align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.unit-heading > div {
+  flex: 1;
+  min-width: 200px;
 }
 .unit-heading > span {
   font-family: var(--font-mono);
@@ -565,6 +571,32 @@ main:focus { outline: 0; }
   font-size: 13px;
   margin-top: 6px;
   max-width: 480px;
+}
+.unit-skip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 480;
+  min-height: 36px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-card-mist);
+  color: var(--color-ink-black);
+  border: 1px solid var(--color-border-hairline);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.unit-skip-btn:hover {
+  background: var(--surface-section-fog);
+  border-color: var(--color-ink-black);
+  transform: translateY(-1px);
+}
+.unit-skip-btn .icon {
+  width: 15px;
+  height: 15px;
+  color: var(--color-sienna-brown);
 }
 
 /* Trail Lessons Nodes */
@@ -1610,6 +1642,7 @@ dialog::backdrop {
   .lesson-path { gap: 20px; }
   .lesson-node-row:before { left: 29px; top: 68px; height: 36px; }
   .unit-heading h3 { font-size: 16px; }
+  .unit-skip-btn { width: 100%; justify-content: center; margin-top: 8px; }
   .draft-unit { font-size: 12px; }
 
   .language-grid { grid-template-columns: 1fr; }
