@@ -35,16 +35,109 @@ const chapter=()=>chapters().find(c=>c.id===state.chapters[state.language])||cha
 const unlocked=l=>{const ch=chapters().find(c=>c.lessons.includes(l)),i=ch.lessons.indexOf(l);return i===0||done(l.id)||done(ch.lessons[i-1].id);};
 const lessonURL=id=>`#aula/${state.language}/${encodeURIComponent(id)}`;
 const tag=l=>`<span class="language-tag ${l.id}">${esc(l.tag)}</span>`;
+
+const ENERGY_KEY=()=>user?`lincode.energy.${user.id}.v1`:'lincode.energy.guest.v1';
+const MAX_LIVES=10;
+const RECHARGE_INTERVAL_MS=15*60*1000;
+
+function readEnergy(){
+  try{
+    const raw=JSON.parse(localStorage.getItem(ENERGY_KEY()))||{};
+    let lives=Number.isInteger(raw.lives)?Math.max(0,Math.min(MAX_LIVES,raw.lives)):MAX_LIVES;
+    let updatedAt=Number.isFinite(raw.updatedAt)?raw.updatedAt:Date.now();
+    const elapsed=Date.now()-updatedAt;
+    if(lives<MAX_LIVES&&elapsed>=RECHARGE_INTERVAL_MS){
+      const recovered=Math.floor(elapsed/RECHARGE_INTERVAL_MS);
+      lives=Math.min(MAX_LIVES,lives+recovered);
+      updatedAt=Date.now()-(elapsed%RECHARGE_INTERVAL_MS);
+      writeEnergy({lives,updatedAt});
+    }
+    return {lives,updatedAt};
+  }catch{
+    return {lives:MAX_LIVES,updatedAt:Date.now()};
+  }
+}
+
+function writeEnergy(data){
+  try{localStorage.setItem(ENERGY_KEY(),JSON.stringify(data));}catch{}
+}
+
+function getLives(){return readEnergy().lives;}
+
+function consumeLife(amount=1){
+  const e=readEnergy(),prev=e.lives;
+  e.lives=Math.max(0,e.lives-amount);
+  if(prev===MAX_LIVES&&e.lives<MAX_LIVES){e.updatedAt=Date.now();}
+  writeEnergy(e);
+  header();
+  return e.lives;
+}
+
+function addLives(amount=2){
+  const e=readEnergy();
+  e.lives=Math.min(MAX_LIVES,e.lives+amount);
+  if(e.lives>=MAX_LIVES){e.updatedAt=Date.now();}
+  writeEnergy(e);
+  header();
+  return e.lives;
+}
+
+function rechargeFull(){
+  writeEnergy({lives:MAX_LIVES,updatedAt:Date.now()});
+  header();
+  return MAX_LIVES;
+}
+
+function batterySVG(st,isLow){
+  const w=st==='full'?15:st==='half'?7.5:0;
+  const cls=st==='full'?(isLow?'crit':'full'):st==='half'?(isLow?'crit':'half'):'empty';
+  return `<svg class="battery-svg ${st} ${isLow?'is-low':''}" viewBox="0 0 22 12" width="18" height="10" aria-hidden="true"><rect x="0.75" y="0.75" width="17.5" height="10.5" rx="2.5" class="bat-shell"/><path d="M19.5 3.5 C20.3 3.5, 20.8 4, 20.8 4.8 L20.8 7.2 C20.8 8, 20.3 8.5, 19.5 8.5 Z" class="bat-tip"/>${w>0?`<rect x="2" y="2" width="${w}" height="8" rx="1.5" class="bat-fill ${cls}"/>`:''}</svg>`;
+}
+
+function renderBatteries(lives=getLives()){
+  const isLow=lives<=2;
+  let svgs='';
+  for(let i=0;i<5;i++){
+    const st=lives>=(i+1)*2?'full':lives===(i*2)+1?'half':'empty';
+    svgs+=batterySVG(st,isLow);
+  }
+  return `<button class="battery-pack" type="button" data-open-energy aria-label="${lives} de 10 vidas (${Math.floor(lives/2)} baterias cheias${lives%2?', 1 pela metade':''})" title="${lives}/10 vidas · ${lives%2?'Meia bateria gasta':'Clique para ver detalhes das baterias'}"><div class="battery-svgs">${svgs}</div><span class="battery-label">${lives}<small>/10</small></span></button>`;
+}
+
+function showEnergyModal(){
+  const lives=getLives();
+  const full=Math.floor(lives/2);
+  const half=lives%2;
+  $('#account-content').innerHTML=`
+    <button class="close" data-close-account aria-label="Fechar">×</button>
+    ${bit(lives>4?'encourage':'doubt')}
+    <span class="eyebrow">SISTEMA DE VIDAS · ENERGIA</span>
+    <h2 id="account-title">Suas Baterias de Estudo</h2>
+    <div class="energy-modal-body">
+      <div class="energy-big-pack">${renderBatteries(lives)}</div>
+      <p class="intro">Você tem <strong>${lives} de 10 vidas</strong> (${full} bateria${full!==1?'s':''} cheia${full!==1?'s':''}${half?' e 1 pela metade':''}).</p>
+      <div class="rules-card">
+        <div class="rule-item"><span>⚡</span><div><strong>Cada erro consome 1 vida</strong><p>Uma resposta incorreta consome meia bateria.</p></div></div>
+        <div class="rule-item"><span>🔋</span><div><strong>5 baterias = 10 vidas</strong><p>Cada bateria inteira armazena 2 vidas de estudo.</p></div></div>
+        <div class="rule-item"><span>📚</span><div><strong>Praticar recarrega</strong><p>Revisar lições no modo Praticar recupera +2 vidas (1 bateria cheia).</p></div></div>
+        <div class="rule-item"><span>⏱️</span><div><strong>Recarga contínua</strong><p>Ganha 1 vida a cada 15 minutos automaticamente.</p></div></div>
+      </div>
+      ${lives<MAX_LIVES?`<button class="button primary" data-recharge-now>⚡ Recarregar tudo agora (10/10)</button>`:`<p class="muted">Suas baterias estão na carga máxima! Bom estudo.</p>`}
+    </div>
+  `;
+  if(!$('#account-dialog').open)$('#account-dialog').showModal();
+}
+
 function streak(){let n=0,d=new Date();const studied=k=>state.studyDays.includes(k)||(state.studySeconds[k]||0)>0;if(!studied(dateKey(d)))d.setDate(d.getDate()-1);while(studied(dateKey(d))){n++;d.setDate(d.getDate()-1);}return n;}
 function progress(value,max,label){return `<div class="progress-track" role="progressbar" aria-label="${esc(label)}" aria-valuenow="${Math.min(value,max)}" aria-valuemin="0" aria-valuemax="${max}"><span style="width:${Math.min(value/max*100,100)}%"></span></div>`;}
-function header(){const l=language();$('#course-switch').innerHTML=tag(l)+esc(l.name)+' <span class="muted">⌄</span>';$('#stats').innerHTML=`<span class="streak">${icon('practice')} ${streak()}<small>dias</small></span><span class="xp">${icon('star')} ${state.completed.length*20}<small>XP</small></span>`;$('#account-button').textContent=(user?.name||'Você').slice(0,1).toUpperCase();storageLabel();}
+function header(){const l=language();$('#course-switch').innerHTML=tag(l)+esc(l.name)+' <span class="muted">⌄</span>';$('#stats').innerHTML=`<span class="streak">${icon('practice')} ${streak()}<small>dias</small></span><span class="xp">${icon('star')} ${state.completed.length*20}<small>XP</small></span>${renderBatteries()}`;$('#account-button').textContent=(user?.name||'Você').slice(0,1).toUpperCase();storageLabel();}
 function page(content){$('#main').innerHTML=`<div class="page">${content}</div>`;}
 function render(){if(!ready)return;const route=location.hash.slice(1)||'aprender';const isLesson=route.startsWith('aula/');document.body.classList.toggle('in-lesson',isLesson);document.querySelectorAll('[data-nav]').forEach(el=>{const active=el.dataset.nav===route||el.dataset.nav==='aprender'&&(isLesson||route==='capitulos');el.classList.toggle('active',active);if(active)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});header();if(isLesson){openLesson(route);return;}session=null;({aprender:renderLearn,capitulos:renderChapters,linguagens:renderLanguages,praticar:renderPractice,missoes:renderMissions,projetos:renderProjects,perfil:renderProfile,mais:renderMore}[route]||renderLearn)();$('#main').removeAttribute('aria-busy');}
 function renderLearn(){const c=chapter(),completed=c.lessons.filter(l=>done(l.id)).length,next=c.lessons.find(l=>!done(l.id)&&unlocked(l));page(`<div class="page-heading"><div><span class="eyebrow">SEU ESPAÇO DE ESTUDO</span><h1>Um pouco de código, todos os dias.</h1></div><a class="button subtle" href="#capitulos">Ver capítulos ${icon('arrow')}</a></div><div class="learning-layout"><section class="trail"><div class="chapter-banner"><div><span class="eyebrow">${esc(language().name)} · CAPÍTULO ${chapters().indexOf(c)+1}</span><h2>${esc(c.title)}</h2><p>${esc(c.description)}</p></div><button class="guide-button" data-guide aria-label="Abrir guia deste capítulo">${icon('learn')} Guia</button></div><div class="trail-meta"><span>${completed} de ${c.lessons.length} disponíveis concluídas</span><span>Meta: 40 lições</span></div>${c.units.map((u,i)=>{const unitDone=u.lessons.length&&u.lessons.every(l=>done(l.id));return `<section class="unit" aria-labelledby="unit-${i}"><div class="unit-heading"><span>0${i+1}</span><div><h3 id="unit-${i}">${esc(u.title)}</h3><p>${esc(u.objective)}</p></div>${!unitDone&&u.lessons.length?`<button class="unit-skip-btn" data-skip-unit="${i}">${icon('star')} ${i===0?'Pular unidade com teste':'Pular até aqui com teste'}</button>`:''}</div>${u.lessons.length?`<div class="lesson-path">${u.lessons.map((l,j)=>{const available=unlocked(l),current=next?.id===l.id;return `<div class="lesson-node-row offset-${j%4}">${available?`<a href="${lessonURL(l.id)}" class="lesson-node ${done(l.id)?'done':current?'current':''}" aria-label="${esc(l.title)} — ${done(l.id)?'Revisar':'Começar'}">${icon(done(l.id)?'check':'star')}</a>`:`<button class="lesson-node" disabled aria-label="${esc(l.title)}. Conclua a lição anterior.">${icon('lock')}</button>`}<div>${current?'<span class="now">PRÓXIMO PASSO</span>':''}<h4>${esc(l.title)}</h4><p>${l.questions.length} atividades · ${done(l.id)?'Concluída':'20 XP'}</p></div></div>`;}).join('')}</div>`:'<p class="draft-unit">Conteúdo em preparação · 5 lições previstas</p>'}</section>`;}).join('')}</section>${rail()}</div>`);}
 function rail(){const seconds=state.studySeconds[dateKey()]||0;return `<aside class="right-rail"><div class="bit-note">${bit('encourage')}<p>Leia o exemplo, teste sua ideia e veja o que acontece.</p><span>BIT · SEU COMPANHEIRO</span></div><section class="panel"><div class="section-title"><h2>Seu ritmo hoje</h2><a href="#perfil">Editar</a></div><p><strong class="big-number">${Math.floor(seconds/60)}</strong> / ${state.dailyMinutes} minutos</p>${progress(seconds,state.dailyMinutes*60,'Meta de tempo ativo')}<p class="muted">O tempo conta enquanto você estuda em uma aula ativa.</p><div class="week">${Array.from({length:7},(_,i)=>{const d=new Date();d.setDate(d.getDate()-6+i);return `<span class="${state.studyDays.includes(dateKey(d))?'studied':''}">${['D','S','T','Q','Q','S','S'][d.getDay()]}<b>${state.studyDays.includes(dateKey(d))?'✓':'·'}</b></span>`;}).join('')}</div></section><section class="panel"><span class="eyebrow">MISSÃO DO DIA</span><h2>Aprenda um conceito novo</h2><p>Conclua uma lição para ganhar 20 XP.</p>${progress(state.activity[dateKey()]||0,20,'Missão diária')}<a class="text-link" href="#missoes">Ver missões ${icon('arrow')}</a></section>${!user?'<section class="panel"><h2>Guarde seu progresso</h2><p>Crie uma conta neste servidor para continuar de onde parou.</p><button class="button primary" data-account="register">Criar conta</button><button class="text-button" data-account="login">Já tenho uma conta</button></section>':''}</aside>`;}
 function renderChapters(){page(`<div class="page-heading"><div><span class="eyebrow">${esc(language().name)} · MAPA DO CURSO</span><h1>Escolha um capítulo</h1><p class="muted">O currículo está em expansão. Cada capítulo terá oito unidades e 40 lições.</p></div></div><div class="chapter-catalog">${chapters().map((c,i)=>{const n=c.lessons.filter(l=>done(l.id)).length;return `<article class="chapter-card"><span class="chapter-number">${String(i+1).padStart(2,'0')}</span><div><h2>${esc(c.title)}</h2><p>${esc(c.description)}</p><p class="muted">Pré-requisito sugerido: ${i?esc(chapters()[i-1].title):'nenhum'}</p><div class="chapter-status"><span>${c.lessons.length} lições disponíveis de 40 previstas</span><span>${n} concluídas</span></div>${progress(n,40,'Progresso do capítulo')}<button class="button ${c.lessons.length?'primary':'subtle'}" data-chapter="${c.id}">${c.lessons.length?'Explorar capítulo':'Ver temas planejados'} ${icon('arrow')}</button></div></article>`;}).join('')}</div>`);}
 function renderLanguages(){page(`<span class="eyebrow">O QUE VOCÊ QUER CONSTRUIR?</span><h1>Escolha sua linguagem</h1><p class="intro">Cada trilha tem seu próprio progresso. Você pode trocar quando quiser.</p><div class="language-grid">${LANGUAGES.map(l=>{const cs=courseChapters(l);return `<button class="course-card ${state.language===l.id?'selected':''}" data-language="${l.id}" aria-pressed="${state.language===l.id}">${tag(l)}<h2>${esc(l.name)}</h2><p>${esc(l.description)}</p><small>${esc(l.family)}</small><div>${cs.length} capítulos · ${cs.flatMap(c=>c.lessons).length} lições disponíveis</div><span class="text-link">${state.language===l.id?'Trilha atual':'Escolher trilha'} ${icon('arrow')}</span></button>`;}).join('')}</div>`);}
-function renderPractice(){const lessons=allLessons().filter(l=>done(l.id));page(`<span class="eyebrow">REVISÃO · ${esc(language().name)}</span><h1>Pratique o que já aprendeu</h1><p class="intro">Revise uma ideia ou refaça um exercício. A revisão não repete a recompensa de XP.</p>${lessons.length?lessons.map(l=>`<article class="practice-row"><div><h2>${esc(l.title)}</h2><p>${esc(l.subtitle)}</p></div><a class="button subtle" href="${lessonURL(l.id)}">Revisar ${icon('arrow')}</a></article>`).join(''):'<div class="empty">'+bit('explain')+'<h2>Sua primeira revisão começa com uma aula.</h2><a class="button primary" href="#aprender">Ir para a trilha</a></div>'}`);}
+function renderPractice(){const lessons=allLessons().filter(l=>done(l.id));page(`<span class="eyebrow">REVISÃO · ${esc(language().name)}</span><h1>Pratique o que já aprendeu</h1><p class="intro">Revise uma ideia ou refaça um exercício. A revisão não repete a recompensa de XP.</p><div class="practice-battery-banner">⚡ Cada lição revisada recupera <strong>1 bateria inteira (+2 vidas)</strong>!</div>${lessons.length?lessons.map(l=>`<article class="practice-row"><div><h2>${esc(l.title)}</h2><p>${esc(l.subtitle)}</p></div><a class="button subtle" href="${lessonURL(l.id)}">Revisar ${icon('arrow')}</a></article>`).join(''):'<div class="empty">'+bit('explain')+'<h2>Sua primeira revisão começa com uma aula.</h2><a class="button primary" href="#aprender">Ir para a trilha</a></div>'}`);}
 function renderMissions(){const sec=state.studySeconds[dateKey()]||0,xp=state.activity[dateKey()]||0;page(`<span class="eyebrow">PASSOS QUE CABEM NO SEU DIA</span><h1>Missões</h1><div class="mission-grid">${[[icon('practice'),'Complete uma lição',xp,20,'XP'],[icon('learn'),'Cumpra sua meta de estudo',Math.floor(sec/60),state.dailyMinutes,'min'],[icon('missions'),'Mantenha seu compromisso',streak(),state.commitment||7,'dias']].map(([ic,title,n,total,unit])=>`<section class="panel mission">${ic}<h2>${title}</h2><p>${n} / ${total} ${unit}</p>${progress(n,total,title)}<strong>${n>=total?'Concluída ✓':'Em andamento'}</strong></section>`).join('')}</div><p class="muted">O tempo de estudo e o XP são registrados separadamente. ${state.commitment?'Compromisso escolhido: '+state.commitment+' dias.':'Você ainda não escolheu um compromisso de dias; a sugestão é uma semana.'}</p><a href="#aprender" class="button primary">Continuar estudando</a>`);}
 const projects={python:['Portfólio de Data Science','Da análise de dados ao modelo, avaliação e monitoramento.'],javascript:['Gerenciador de estudos','Interface, formulários, API e persistência.'],java:['API de biblioteca','Livros, empréstimos, validação, persistência e testes.'],csharp:['API de controle de despesas','Despesas, consultas, persistência e testes.'],cpp:['Sistema de inventário','Arquivos, classes, recursos e testes.']};
 function renderProjects(){const [title,desc]=projects[state.language];page(`<span class="eyebrow">APLIQUE O QUE APRENDEU</span><h1>${esc(title)}</h1><p class="intro">${esc(desc)}</p><div class="project-overview"><div>${bit('explain')}</div><section><h2>Um projeto, passo a passo</h2><p>O capítulo final organiza o projeto em oito etapas. As 40 lições estão em preparação; os exercícios já disponíveis aparecem na trilha.</p><ol>${chapters().at(-1).units.map(u=>`<li>${esc(u.title)}</li>`).join('')}</ol><button class="button primary" data-chapter="${chapters().at(-1).id}">Ver capítulo do projeto</button>${state.language==='python'?'<a class="button subtle" href="portfolio/README.md" target="_blank" rel="noopener">Abrir roteiro local ↗</a>':''}</section></div>`);}
@@ -68,14 +161,17 @@ function answerReady(q){const a=session.answer;if(q.type==='order')return Array.
 function renderLesson(){const s=session,q=s.lesson.questions[s.index],n=s.lesson.questions.length,correct=q&&core.correct(q,s.answer);const count=s.finished?n:Math.max(s.index,0);let body,action;
 if(s.finished){if(s.isTest){const total=n,corr=total-s.errors,pct=Math.round(corr/total*100);body=`<div class="lesson-summary">${bit(s.passed?'celebrate':'doubt')}<span class="eyebrow">${s.passed?'NÍVEL COMPROVADO · PARABÉNS':'TESTE NÃO CONCLUÍDO'}</span><h1>${s.passed?'Teste de nível aprovado!':'Quase lá!'}</h1><p>${s.passed?`Você acertou ${corr} de ${total} (${pct}%) e pulou ${s.targetLessons.length} aulas com sucesso.`:`Você acertou ${corr} de ${total} (${pct}%). É necessário acertar pelo menos 80% para pular.`}</p><div class="result-stats"><div><strong>${s.passed?`+${s.reward}`:0}</strong><span>XP conquistados</span></div><div><strong>${pct}%</strong><span>de acerto</span></div></div><p>${s.passed?'Seu progresso foi atualizado e as próximas aulas já estão liberadas na trilha.':'Recomendamos praticar os passos na trilha para consolidar a base.'}</p></div>`;action=`<button class="button primary" data-back-trail>${s.passed?'Avançar na trilha':'Voltar à trilha'}</button>`;}else{body=`<div class="lesson-summary">${bit('celebrate')}<span class="eyebrow">MAIS UM PASSO CONCLUÍDO</span><h1>Lição concluída!</h1><p>${esc(s.lesson.title)}</p><div class="result-stats"><div><strong>+${s.reward}</strong><span>XP ${s.reward?'conquistados':'· revisão'}</span></div><div><strong>${Math.round(n/(n+s.errors)*100)}%</strong><span>acertos por tentativa</span></div></div><p>${s.reward?'Seu progresso foi salvo.':'Você já concluiu esta aula. A revisão mantém seu XP.'}</p></div>`;action='<button class="button primary" data-back-trail>Voltar à trilha</button>';}}
 else if(s.index===-1){body=`<span class="eyebrow">${esc(language().name)} · ${s.isTest?'TESTE DE NIVELAMENTO':'ANTES DE PRATICAR'}</span><h1>${esc(s.lesson.title)}</h1><div class="lesson-intro">${bit('explain')}<p>${esc(s.lesson.theory)}</p></div><p class="muted">${n} atividades · ${s.isTest?'mínimo de 80% de acerto para pular':'tentativas sem limite'} · respostas sem execução de código</p>`;action=`<button class="button primary" data-start>${s.isTest?'Iniciar teste':'Vamos praticar'} ${icon('arrow')}</button>`;}
-else{body=`<span class="eyebrow">${({choice:'ESCOLHA UMA RESPOSTA',text:'ESCREVA SUA RESPOSTA',gap:'COMPLETE O CÓDIGO',order:'ORGANIZE OS PASSOS',pairs:'COMBINE OS PARES'})[q.type]}</span><h1>${esc(q.prompt)}</h1>${q.code?`<pre class="code"><code>${esc(q.code)}</code></pre>`:''}${q.flow||q.diagram?flow(q.diagram):''}${answerBoard(q)}${s.checked?`<div class="feedback ${correct?'correct':'incorrect'}" role="status">${bit(correct?'encourage':'doubt')}<div><strong>${correct?'Isso mesmo!':s.isTest?'Resposta incorreta.':'Vamos tentar de novo.'}</strong><p>${esc(q.explanation)}</p></div></div>`:''}`;action=`<button class="button primary" data-check ${!s.checked&&!answerReady(q)?'disabled':''}>${s.checked?(s.isTest?(s.index+1===n?'Ver resultado':'Próxima pergunta'):(correct?'Continuar':'Tentar de novo')):'Verificar'}</button>`;}
-$('#main').innerHTML=`<div class="lesson-screen"><div class="lesson-top"><button class="close" data-back-trail aria-label="Sair da aula e salvar posição">×</button>${progress(count,n,'Progresso da lição')}<span>${count} / ${n}</span></div><section class="lesson-body">${body}</section><div class="lesson-footer"><span class="muted">${s.finished?'Você pode revisar quando quiser.':s.isTest?'Teste de nivelamento para avançar na trilha.':'Leia com calma. Seu progresso é salvo a cada etapa.'}</span>${action}</div></div>`;$('#main').removeAttribute('aria-busy');}
+else if(getLives()===0&&!s.finished){body=`<div class="lesson-summary battery-depleted">${bit('doubt')}<span class="eyebrow">BATERIAS DESCARREGADAS · 0/10 VIDAS</span><h1>Suas baterias acabaram!</h1><p>Você cometeu erros suficientes para descarregar as 5 baterias de energia. Para continuar esta aula, faça uma recarga agora ou revise lições no modo Praticar.</p><div class="battery-depleted-visual">${renderBatteries(0)}</div><div class="result-stats"><div><strong>0</strong><span>vidas restantes</span></div><div><strong>15 min</strong><span>recarga passiva</span></div></div><p class="muted">Dica: revisar no modo <strong>Praticar</strong> recupera 1 bateria inteira (+2 vidas) por lição concluída!</p></div>`;action=`<div class="battery-empty-actions"><button class="button primary" data-recharge-now>⚡ Recarregar baterias (10/10)</button><button class="button subtle" data-back-trail>Voltar à trilha</button></div>`;}
+else{body=`<span class="eyebrow">${({choice:'ESCOLHA UMA RESPOSTA',text:'ESCREVA SUA RESPOSTA',gap:'COMPLETE O CÓDIGO',order:'ORGANIZE OS PASSOS',pairs:'COMBINE OS PARES'})[q.type]}</span><h1>${esc(q.prompt)}</h1>${q.code?`<pre class="code"><code>${esc(q.code)}</code></pre>`:''}${q.flow||q.diagram?flow(q.diagram):''}${answerBoard(q)}${s.checked?`<div class="feedback ${correct?'correct':'incorrect'}" role="status">${bit(correct?'encourage':'doubt')}<div><strong>${correct?'Isso mesmo!':s.isTest?'Resposta incorreta.':'Vamos tentar de novo.'}</strong>${!correct?`<p class="life-loss-notice">⚡ <strong>-1 vida (meia bateria perdida)</strong> · Restam ${getLives()}/10 vidas</p>`:''}<p>${esc(q.explanation)}</p></div></div>`:''}`;action=`<button class="button primary" data-check ${!s.checked&&!answerReady(q)?'disabled':''}>${s.checked?(s.isTest?(s.index+1===n?'Ver resultado':'Próxima pergunta'):(correct?'Continuar':'Tentar de novo')):'Verificar'}</button>`;}
+$('#main').innerHTML=`<div class="lesson-screen"><div class="lesson-top"><button class="close" data-back-trail aria-label="Sair da aula e salvar posição">×</button>${progress(count,n,'Progresso da lição')}<span>${count} / ${n}</span>${renderBatteries()}</div><section class="lesson-body">${body}</section><div class="lesson-footer"><span class="muted">${s.finished?'Você pode revisar quando quiser.':s.isTest?'Teste de nivelamento para avançar na trilha.':'Leia com calma. Seu progresso é salvo a cada etapa.'}</span>${action}</div></div>`;$('#main').removeAttribute('aria-busy');}
 function leaveLesson(){if(session?.isTest){session=null;location.hash='aprender';requestAnimationFrame(()=>{const y=Number(sessionStorage.getItem('lincode.trail.scroll')||0);window.scrollTo(0,y);});return;}remember();const c=session&&chapters().find(ch=>ch.lessons.includes(session.lesson));if(c)state.chapters[state.language]=c.id;save();location.hash='aprender';requestAnimationFrame(()=>{const y=Number(sessionStorage.getItem('lincode.trail.scroll')||0);window.scrollTo(0,y);});}
-function check(){const s=session,q=s.lesson.questions[s.index];if(s.isTest){if(!s.checked){if(!answerReady(q))return;s.checked=true;if(!core.correct(q,s.answer))s.errors++;}else{if(s.index+1<s.lesson.questions.length){s.index++;s.answer=null;s.checked=false;}else{const total=s.lesson.questions.length,correct=total-s.errors;s.passed=(correct/total)>=0.8;s.finished=true;if(s.passed){let totalXP=0;for(const l of s.targetLessons){totalXP+=core.finish(state,s.lang,l.id,dateKey());}s.reward=totalXP;save();header();}}}renderLesson();$('#main').focus();return;}if(!s.checked){if(!answerReady(q))return;s.checked=true;if(!core.correct(q,s.answer))s.errors++;}else if(!core.correct(q,s.answer)){s.checked=false;s.answer=null;}else if(s.index+1<s.lesson.questions.length){s.index++;s.answer=null;s.checked=false;}else{state=core.merge(readLocal(storageKey()),state);s.reward=core.finish(state,s.lang,s.lesson.id,dateKey());s.finished=true;delete state.resumes[s.lang];save();header();}remember();renderLesson();$('#main').focus();}
+function check(){const s=session,q=s.lesson.questions[s.index];if(s.isTest){if(!s.checked){if(!answerReady(q))return;s.checked=true;if(!core.correct(q,s.answer)){s.errors++;consumeLife(1);}}else{if(s.index+1<s.lesson.questions.length){s.index++;s.answer=null;s.checked=false;}else{const total=s.lesson.questions.length,correct=total-s.errors;s.passed=(correct/total)>=0.8;s.finished=true;if(s.passed){let totalXP=0;for(const l of s.targetLessons){totalXP+=core.finish(state,s.lang,l.id,dateKey());}s.reward=totalXP;addLives(2);save();header();}}}renderLesson();$('#main').focus();return;}if(!s.checked){if(!answerReady(q))return;s.checked=true;if(!core.correct(q,s.answer)){s.errors++;consumeLife(1);}}else if(!core.correct(q,s.answer)){s.checked=false;s.answer=null;}else if(s.index+1<s.lesson.questions.length){s.index++;s.answer=null;s.checked=false;}else{state=core.merge(readLocal(storageKey()),state);s.reward=core.finish(state,s.lang,s.lesson.id,dateKey());s.finished=true;delete state.resumes[s.lang];if(s.reward===0){addLives(2);toast('Lição revisada! Você recuperou 1 bateria inteira (+2 vidas).');}else{addLives(1);}save();header();}remember();renderLesson();$('#main').focus();}
 $('#course-switch').onclick=()=>{location.hash='linguagens';};$('#account-button').onclick=()=>{location.hash='perfil';};
 document.addEventListener('click',async e=>{if(!ready)return;lastInteraction=Date.now();const el=e.target.closest('button,a');if(!el)return;
 if(el.matches('[href^="#aula/"]')){sessionStorage.setItem('lincode.trail.scroll',String(scrollY));}
 if(el.dataset.language){state.language=el.dataset.language;save();location.hash='aprender';render();}
+if(el.closest('[data-open-energy]')){showEnergyModal();return;}
+if(el.hasAttribute('data-recharge-now')){rechargeFull();toast('Baterias totalmente recarregadas! 10/10 vidas.');if(location.hash.startsWith('#aula/'))renderLesson();else{$('#account-dialog').close();header();}return;}
 if(el.dataset.skipUnit!==undefined){startSkipTest(Number(el.dataset.skipUnit));return;}if(el.dataset.chapter){state.chapters[state.language]=el.dataset.chapter;save();location.hash='aprender';render();window.scrollTo(0,0);}
 if(el.hasAttribute('data-guide')){location.hash='capitulos';}
 if(el.dataset.account)showAccount(el.dataset.account);

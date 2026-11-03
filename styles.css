@@ -374,6 +374,156 @@ main:focus { outline: 0; }
 .streak { color: var(--color-sienna-brown); }
 .xp { color: var(--color-ink-black); }
 
+.battery-pack {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-card-mist);
+  border: 1px solid var(--color-border-hairline);
+  color: var(--color-ink-black);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.battery-pack:hover {
+  background: var(--surface-section-fog);
+  border-color: var(--color-ink-black);
+  transform: translateY(-1px);
+}
+.battery-svgs {
+  display: inline-flex;
+  align-items: center;
+  gap: 3.5px;
+}
+.battery-svg {
+  display: block;
+  overflow: visible;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.bat-shell {
+  fill: var(--surface-canvas);
+  stroke: var(--color-ink-black);
+  stroke-width: 1.2;
+}
+.bat-tip {
+  fill: var(--color-ink-black);
+}
+.bat-fill.full {
+  fill: #16a34a;
+}
+.bat-fill.half {
+  fill: #d97706;
+}
+.bat-fill.crit {
+  fill: #dc2626;
+}
+.battery-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-ink-black);
+}
+.battery-label small {
+  color: var(--color-slate-gray);
+  font-weight: 400;
+  font-size: 11px;
+}
+
+/* Life loss notice inside feedback */
+.life-loss-notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 10px;
+  padding: 4px 10px;
+  background: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Practice mode battery recharge banner */
+.practice-battery-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  background: rgba(22, 163, 74, 0.08);
+  border: 1px solid rgba(22, 163, 74, 0.2);
+  border-radius: var(--radius-card);
+  color: #166534;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* Energy dialog / modal */
+.energy-modal-body {
+  margin-top: 16px;
+  text-align: center;
+}
+.energy-big-pack {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+.energy-big-pack .battery-pack {
+  padding: 10px 18px;
+  transform: scale(1.15);
+  pointer-events: none;
+}
+.rules-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--surface-card-mist);
+  border: 1px solid var(--color-border-hairline);
+  border-radius: var(--radius-card);
+  padding: 16px;
+  margin: 20px 0;
+  text-align: left;
+}
+.rule-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.rule-item > span {
+  font-size: 20px;
+  line-height: 1;
+}
+.rule-item strong {
+  display: block;
+  font-size: 14px;
+  color: var(--color-ink-black);
+}
+.rule-item p {
+  font-size: 13px;
+  color: var(--color-slate-gray);
+  margin: 2px 0 0;
+}
+.battery-depleted {
+  text-align: center;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.battery-depleted-visual {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+.battery-empty-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
 .avatar {
   border: 1px solid var(--color-border-hairline);
   background: var(--color-mist-gray);
@@ -1617,6 +1767,13 @@ dialog::backdrop {
   .stats small { display: none; }
   .stats .icon { width: 18px; height: 18px; }
   .stats > span { gap: 4px; font-size: 13px; }
+
+  .battery-pack { padding: 3px 6px; gap: 4px; }
+  .battery-svgs { gap: 2px; }
+  .battery-svg { width: 14px; height: 8px; }
+  .battery-label small { display: none; }
+  .lesson-top .battery-label { font-size: 11px; }
+
   .avatar { width: 34px; height: 34px; flex-shrink: 0; }
   .course-switch { gap: 8px; font-size: 13px; padding: 6px 12px; }
   .language-tag { width: 32px; height: 32px; font-size: 12px; }
