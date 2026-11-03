@@ -34,3 +34,14 @@ test('an older server response cannot replace an unsynced lesson answer',()=>{
  const finished=C.clean({updatedAt:30,resumes:{},completed:['python:a']});
  assert.deepEqual(C.merge(local,finished).resumes,{});
 });
+test('energy state cleans safely, clamps lives between 0 and 10 and merges latest updatedAt',()=>{
+ const c=C.clean({energy:{lives:7,updatedAt:50}});
+ assert.equal(c.energy.lives,7);
+ assert.equal(c.energy.updatedAt,50);
+ const invalid=C.clean({energy:{lives:99,updatedAt:-1}});
+ assert.equal(invalid.energy.lives,10);
+ const newer=C.clean({updatedAt:100,energy:{lives:4,updatedAt:100}});
+ const older=C.clean({updatedAt:50,energy:{lives:8,updatedAt:50}});
+ assert.equal(C.merge(newer,older).energy.lives,4);
+ assert.equal(C.merge(older,newer).energy.lives,4);
+});

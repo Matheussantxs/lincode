@@ -36,54 +36,46 @@ const unlocked=l=>{const ch=chapters().find(c=>c.lessons.includes(l)),i=ch.lesso
 const lessonURL=id=>`#aula/${state.language}/${encodeURIComponent(id)}`;
 const tag=l=>`<span class="language-tag ${l.id}">${esc(l.tag)}</span>`;
 
-const ENERGY_KEY=()=>user?`lincode.energy.${user.id}.v1`:'lincode.energy.guest.v1';
 const MAX_LIVES=10;
 const RECHARGE_INTERVAL_MS=15*60*1000;
 
-function readEnergy(){
-  try{
-    const raw=JSON.parse(localStorage.getItem(ENERGY_KEY()))||{};
-    let lives=Number.isInteger(raw.lives)?Math.max(0,Math.min(MAX_LIVES,raw.lives)):MAX_LIVES;
-    let updatedAt=Number.isFinite(raw.updatedAt)?raw.updatedAt:Date.now();
-    const elapsed=Date.now()-updatedAt;
-    if(lives<MAX_LIVES&&elapsed>=RECHARGE_INTERVAL_MS){
-      const recovered=Math.floor(elapsed/RECHARGE_INTERVAL_MS);
-      lives=Math.min(MAX_LIVES,lives+recovered);
-      updatedAt=Date.now()-(elapsed%RECHARGE_INTERVAL_MS);
-      writeEnergy({lives,updatedAt});
-    }
-    return {lives,updatedAt};
-  }catch{
-    return {lives:MAX_LIVES,updatedAt:Date.now()};
+function syncEnergy(){
+  if(!state.energy||!Number.isInteger(state.energy.lives)){
+    state.energy={lives:MAX_LIVES,updatedAt:Date.now()};
   }
+  const e=state.energy,now=Date.now(),elapsed=now-(e.updatedAt||now);
+  if(e.lives<MAX_LIVES&&elapsed>=RECHARGE_INTERVAL_MS){
+    const recovered=Math.floor(elapsed/RECHARGE_INTERVAL_MS);
+    e.lives=Math.min(MAX_LIVES,e.lives+recovered);
+    e.updatedAt=now-(elapsed%RECHARGE_INTERVAL_MS);
+    save();
+  }
+  return e;
 }
 
-function writeEnergy(data){
-  try{localStorage.setItem(ENERGY_KEY(),JSON.stringify(data));}catch{}
-}
-
-function getLives(){return readEnergy().lives;}
+function getLives(){return syncEnergy().lives;}
 
 function consumeLife(amount=1){
-  const e=readEnergy(),prev=e.lives;
+  const e=syncEnergy(),prev=e.lives;
   e.lives=Math.max(0,e.lives-amount);
   if(prev===MAX_LIVES&&e.lives<MAX_LIVES){e.updatedAt=Date.now();}
-  writeEnergy(e);
+  save();
   header();
   return e.lives;
 }
 
 function addLives(amount=2){
-  const e=readEnergy();
+  const e=syncEnergy();
   e.lives=Math.min(MAX_LIVES,e.lives+amount);
   if(e.lives>=MAX_LIVES){e.updatedAt=Date.now();}
-  writeEnergy(e);
+  save();
   header();
   return e.lives;
 }
 
 function rechargeFull(){
-  writeEnergy({lives:MAX_LIVES,updatedAt:Date.now()});
+  state.energy={lives:MAX_LIVES,updatedAt:Date.now()};
+  save();
   header();
   return MAX_LIVES;
 }

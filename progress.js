@@ -4,6 +4,9 @@ globalThis.LincodeCore = (() => {
   const dayPattern = /^\d{4}-\d{2}-\d{2}$/;
   const dayMap = value => Object.fromEntries(Object.entries(value || {}).filter(([k,v]) => dayPattern.test(k) && Number.isFinite(v) && v >= 0));
   function clean(raw = {}) {
+    const energy = (raw.energy && Number.isInteger(raw.energy.lives) && raw.energy.lives >= 0 && raw.energy.lives <= 10)
+      ? { lives: raw.energy.lives, updatedAt: Number.isFinite(raw.energy.updatedAt) && raw.energy.updatedAt >= 0 ? raw.energy.updatedAt : 0 }
+      : { lives: 10, updatedAt: 0 };
     return {version:2, updatedAt:Number.isFinite(raw.updatedAt)?raw.updatedAt:0, language:languages.includes(raw.language)?raw.language:'python',
       completed:[...new Set((Array.isArray(raw.completed)?raw.completed:[]).filter(x=>typeof x==='string' && x.length<=100))],
       activity:dayMap(raw.activity), studySeconds:dayMap(raw.studySeconds),
@@ -12,7 +15,8 @@ globalThis.LincodeCore = (() => {
       commitment:[0,7,14,30,50].includes(raw.commitment)?raw.commitment:0,
       resumes:raw.resumes && typeof raw.resumes==='object' && !Array.isArray(raw.resumes)?raw.resumes:{},
       chapters:raw.chapters && typeof raw.chapters==='object' && !Array.isArray(raw.chapters)?raw.chapters:{},
-      onboarded:raw.onboarded===true};
+      onboarded:raw.onboarded===true,
+      energy};
   }
   function merge(left, right) {
     const a=clean(left), b=clean(right), latest=a.updatedAt>b.updatedAt?a:b;
