@@ -37,7 +37,6 @@ chrome-qa*/
 preview-*.png
 # Deployment and security tooling
 .vercel/
-public/
 references/
 strix_runs/
 *.pfx
