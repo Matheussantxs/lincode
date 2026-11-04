@@ -22,7 +22,6 @@ __pycache__/
 
 # Dependências e resultados gerados
 node_modules/
-dist/
 coverage/
 *.log
 portfolio/artifacts/
