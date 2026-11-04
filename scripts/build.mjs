@@ -1,10 +1,11 @@
-import {mkdir,copyFile,writeFile,rm,lstat} from 'node:fs/promises';
+import {mkdir,copyFile,writeFile,rm,lstat,readdir} from 'node:fs/promises';
+import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {publicPaths} from '../http-handler.mjs';
 
 const moduleRoot=fileURLToPath(new URL('..',import.meta.url));
-const root=process.cwd()&&path.resolve(process.cwd())===path.resolve(moduleRoot)?process.cwd():moduleRoot;
+const root=process.cwd();
 const targets=[path.join(root,'public'),path.join(root,'dist')];
 
 for(const out of targets){
@@ -19,4 +20,7 @@ for(const out of targets){
  }
  await writeFile(path.join(out,'robots.txt'),'User-agent: *\nDisallow: /api/\n');
 }
-console.log('Build público gerado por lista explícita de arquivos em public/ e dist/.');
+
+const distExists = fs.existsSync(path.join(root, 'dist'));
+const distCount = distExists ? (await readdir(path.join(root, 'dist'))).length : 0;
+console.log(`Build gerado com sucesso em ${root}. dist existe: ${distExists} (${distCount} arquivos).`);
