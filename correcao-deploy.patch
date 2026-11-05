@@ -1,0 +1,83 @@
+diff --git a/.vercelignore b/.vercelignore
+index 493d5e5..cb8bd57 100644
+--- a/.vercelignore
++++ b/.vercelignore
+@@ -9,4 +9,3 @@ docs/qa
+ work
+ strix_runs
+ .git
+-portfolio
+diff --git a/package.json b/package.json
+index 67683f6..5f9f84e 100644
+--- a/package.json
++++ b/package.json
+@@ -7,8 +7,9 @@
+     "node": ">=22"
+   },
+   "scripts": {
++    "build": "node scripts/build.mjs",
+     "start": "node server.mjs",
+-    "test": "node --test tests/security.test.mjs tests/progress.test.mjs tests/auth.test.mjs",
++    "test": "node --test tests/security.test.mjs tests/progress.test.mjs tests/auth.test.mjs tests/build.test.mjs",
+     "validate:curriculum": "node scripts/validate-curriculum.mjs"
+   }
+ }
+diff --git a/scripts/build.mjs b/scripts/build.mjs
+new file mode 100644
+index 0000000..36a6e1e
+--- /dev/null
++++ b/scripts/build.mjs
+@@ -0,0 +1,11 @@
++import {copyFile,mkdir,rm} from 'node:fs/promises';
++import {publicPaths} from '../http-handler.mjs';
++
++const root=new URL('../',import.meta.url),output=new URL('public/',root);
++await rm(output,{recursive:true,force:true});
++for(const file of publicPaths){
++ const target=new URL(file,output);
++ await mkdir(new URL('.',target),{recursive:true});
++ await copyFile(new URL(file,root),target);
++}
++console.log(`Publicados ${publicPaths.length} arquivos em public/.`);
+diff --git a/tests/build.test.mjs b/tests/build.test.mjs
+new file mode 100644
+index 0000000..a794e22
+--- /dev/null
++++ b/tests/build.test.mjs
+@@ -0,0 +1,22 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {execFileSync} from 'node:child_process';
++import {readFile,readdir,mkdir,writeFile} from 'node:fs/promises';
++import {join,relative} from 'node:path';
++import {fileURLToPath} from 'node:url';
++import {publicPaths} from '../http-handler.mjs';
++
++test('build publishes all public assets and removes stale private files',async()=>{
++ const root=new URL('../',import.meta.url),output=new URL('public/',root);
++ await mkdir(output,{recursive:true});
++ await writeFile(new URL('private-stale.txt',output),'must not be published');
++ execFileSync(process.execPath,['scripts/build.mjs'],{cwd:root});
++ const files=await readdir(output,{recursive:true,withFileTypes:true});
++ const names=files.filter(entry=>entry.isFile()).map(entry=>relative(fileURLToPath(output),join(entry.parentPath,entry.name)).replaceAll('\\','/'));
++ assert.deepEqual(names.sort(),[...publicPaths].sort());
++ const html=await readFile(new URL('index.html',output),'utf8');
++ for(const [,file] of html.matchAll(/(?:src|href)="([^"#]+)"/g))assert.ok(names.includes(file),`Missing asset: ${file}`);
++ const config=JSON.parse(await readFile(new URL('vercel.json',root)));
++ assert.equal(config.outputDirectory,'public');
++ assert.equal(config.buildCommand,'npm run build');
++});
+diff --git a/vercel.json b/vercel.json
+index e6ece5e..ceffcdd 100644
+--- a/vercel.json
++++ b/vercel.json
+@@ -1,7 +1,7 @@
+ {
+   "$schema": "https://openapi.vercel.sh/vercel.json",
+-  "buildCommand": null,
+-  "outputDirectory": null,
++  "buildCommand": "npm run build",
++  "outputDirectory": "public",
+   "functions": {
+     "api/index.mjs": {
+       "maxDuration": 30
